@@ -125,7 +125,7 @@ export function Calculator() {
         'text-3xl sm:text-4xl h-full aspect-square rounded-xl shadow-md active:shadow-inner font-light',
         {
           'bg-secondary hover:bg-muted text-secondary-foreground': variant === 'secondary',
-          'bg-accent hover:bg-accent/90 text-accent-foreground': variant === 'accent',
+          'bg-accent hover:bg-accent/90 text-blue-400': variant === 'accent',
           'bg-primary hover:bg-primary/90 text-primary-foreground': variant === 'primary'
         }
       );
@@ -161,7 +161,7 @@ export function Calculator() {
           <Button onClick={() => inputDigit('1')} className={getButtonClass('secondary')}>1</Button>
           <Button onClick={() => inputDigit('2')} className={getButtonClass('secondary')}>2</Button>
           <Button onClick={() => inputDigit('3')} className={getButtonClass('secondary')}>3</Button>
-          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2')}>=</Button>
+          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2 aspect-auto')}>=</Button>
 
           <Button onClick={() => handleOperator('%')} className={getButtonClass('secondary')}><Percent size={32} /></Button>
           <Button onClick={() => inputDigit('0')} className={getButtonClass('secondary')}>0</Button>
