@@ -122,7 +122,7 @@ export function Calculator() {
   
   const getButtonClass = (variant?: 'default' | 'secondary' | 'accent' | 'primary') => {
       return cn(
-        'text-3xl sm:text-4xl h-full aspect-square rounded-full shadow-md active:shadow-inner font-light',
+        'text-3xl sm:text-4xl h-full aspect-square rounded-xl shadow-md active:shadow-inner font-light',
         {
           'bg-secondary hover:bg-muted text-secondary-foreground': variant === 'secondary',
           'bg-accent hover:bg-accent/90 text-accent-foreground': variant === 'accent',
@@ -137,9 +137,6 @@ export function Calculator() {
         
         <div className="text-muted-foreground text-2xl h-8 truncate w-full text-right">
             {utilizationRate !== null ? `排版利用率: ${utilizationRate.toFixed(2)}%` : ''}
-        </div>
-        <div className="text-muted-foreground text-4xl h-10 truncate">
-          {firstOperand || ''} {operator || ''}
         </div>
         <div className="text-foreground text-7xl sm:text-8xl font-medium break-all flex items-center justify-end min-h-[96px]">
           {displayValue}
@@ -164,7 +161,7 @@ export function Calculator() {
           <Button onClick={() => inputDigit('1')} className={getButtonClass('secondary')}>1</Button>
           <Button onClick={() => inputDigit('2')} className={getButtonClass('secondary')}>2</Button>
           <Button onClick={() => inputDigit('3')} className={getButtonClass('secondary')}>3</Button>
-          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2')} style={{gridRow: 'span 2'}}>=</Button>
+          <Button onClick={handleEquals} className={getButtonClass('primary')}>=</Button>
 
           <Button onClick={() => handleOperator('%')} className={getButtonClass('secondary')}><Percent size={32} /></Button>
           <Button onClick={() => inputDigit('0')} className={getButtonClass('secondary')}>0</Button>
