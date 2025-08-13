@@ -82,7 +82,7 @@ export function Calculator() {
 
   const calculateUtilization = (num1: number, num2: number, schedules: number): number => {
     if (schedules <= 0) return 0;
-    const rate = (num1 * num2 * schedules) / (5150 * 5100);
+    const rate = (num1 * num2 * schedules) / (515 * 510);
     return rate * 100;
   }
 
