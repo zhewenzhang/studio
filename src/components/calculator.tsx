@@ -62,9 +62,12 @@ export function Calculator() {
       return;
     }
     
-    if (operator && !shouldResetDisplay) {
-        handleEquals()
-        setFirstOperand(displayValue);
+    const currentValue = parseFloat(displayValue);
+    if (operator && !shouldResetDisplay && firstOperand !== null) {
+      const first = parseFloat(firstOperand);
+      const result = calculate(first, currentValue);
+      setFirstOperand(String(result));
+      setDisplayValue(String(result));
     } else {
         setFirstOperand(displayValue);
     }
@@ -80,9 +83,10 @@ export function Calculator() {
     return term1 * term2 * 4;
   };
 
-  const calculateUtilization = (num1: number, num2: number, schedules: number): number => {
-    if (schedules <= 0) return 0;
-    const rate = (num1 * num2 * schedules) / (515 * 510);
+  const calculateUtilization = (num1: number, num2: number, calcResult: number): number => {
+    const denominator = 515 * 510;
+    if (denominator === 0) return 0;
+    const rate = (num1 * num2 * calcResult) / denominator;
     return rate * 100;
   }
 
@@ -93,7 +97,6 @@ export function Calculator() {
 
     const first = parseFloat(firstOperand);
     const second = parseFloat(displayValue);
-    const schedules = 1; // Hardcode schedule count to 1
 
     if (isNaN(first) || isNaN(second)) {
       setDisplayValue('Error');
@@ -105,7 +108,7 @@ export function Calculator() {
     if (operator === 'x') {
         const result = calculate(first, second);
         setDisplayValue(String(result));
-        const utilization = calculateUtilization(first, second, schedules);
+        const utilization = calculateUtilization(first, second, result);
         setUtilizationRate(utilization);
     } else {
         setDisplayValue('Error');
@@ -161,7 +164,7 @@ export function Calculator() {
           <Button onClick={() => inputDigit('1')} className={getButtonClass('secondary')}>1</Button>
           <Button onClick={() => inputDigit('2')} className={getButtonClass('secondary')}>2</Button>
           <Button onClick={() => inputDigit('3')} className={getButtonClass('secondary')}>3</Button>
-          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2 aspect-auto')} style={{gridRow: 'span 2'}}>=</Button>
+          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2')} style={{gridRow: 'span 2'}}>=</Button>
 
           <Button onClick={() => handleOperator('%')} className={getButtonClass('secondary')}><Percent size={32} /></Button>
           <Button onClick={() => inputDigit('0')} className={getButtonClass('secondary')}>0</Button>
