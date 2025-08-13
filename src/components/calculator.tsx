@@ -58,10 +58,9 @@ export function Calculator() {
       return;
     }
     
-    // If an operator is already active, calculate first
     if (operator && !shouldResetDisplay) {
         handleEquals()
-        setFirstOperand(displayValue); // Use the result for the next operation
+        setFirstOperand(displayValue);
     } else {
         setFirstOperand(displayValue);
     }
@@ -104,7 +103,7 @@ export function Calculator() {
   };
 
   const calculatorButtons = [
-    { label: 'AC', handler: clearAll, className: 'bg-muted text-muted-foreground hover:bg-muted/80' },
+    { label: 'AC', handler: clearAll, variant: 'secondary' as const },
     { label: '+', handler: () => handleOperator('+'), variant: 'accent' as const },
     { label: '-', handler: () => handleOperator('-'), variant: 'accent' as const },
     { label: 'x', handler: () => handleOperator('x'), variant: 'accent' as const },
@@ -115,37 +114,47 @@ export function Calculator() {
     { label: '4', handler: () => inputDigit('4'), variant: 'secondary' as const },
     { label: '5', handler: () => inputDigit('5'), variant: 'secondary' as const },
     { label: '6', handler: () => inputDigit('6'), variant: 'secondary' as const },
-    { label: '0', handler: () => inputDigit('0'), className: 'col-span-2', variant: 'secondary' as const },
+    { label: '=', handler: handleEquals, variant: 'primary' as const, className: 'row-span-2' },
     { label: '1', handler: () => inputDigit('1'), variant: 'secondary' as const },
     { label: '2', handler: () => inputDigit('2'), variant: 'secondary' as const },
     { label: '3', handler: () => inputDigit('3'), variant: 'secondary' as const },
+    { label: '0', handler: () => inputDigit('0'), className: 'col-span-2', variant: 'secondary' as const },
     { label: '.', handler: inputDecimal, variant: 'secondary' as const },
-    { label: '=', handler: handleEquals, variant: 'accent' as const, className: 'col-span-2' },
+  ];
+
+  const gridTemplate = [
+    ['AC', '+', '-', 'x'],
+    ['7', '8', '9', '÷'],
+    ['4', '5', '6', '='],
+    ['1', '2', '3', '='],
+    ['0', '0', '.', '='],
   ];
 
   return (
-    <Card className="w-full max-w-xs sm:max-w-sm mx-auto shadow-2xl border-2 border-primary/10 rounded-2xl bg-card">
-      <CardHeader className="text-center pb-2">
-        <CardTitle className="text-2xl font-headline font-bold text-primary">ScheduleCrunch</CardTitle>
-        <CardDescription>Utilization Calculator</CardDescription>
-      </CardHeader>
-      <CardContent className="p-4">
-        <div className="bg-background/50 rounded-lg p-4 mb-4 text-right overflow-hidden text-ellipsis">
-          <div className="text-muted-foreground text-xl h-7 truncate text-right">
+    <Card className="w-full max-w-xs sm:max-w-sm mx-auto shadow-2xl border-none rounded-2xl bg-card p-2">
+      <CardContent className="p-2">
+        <div className="bg-background rounded-lg p-4 mb-4 text-right overflow-hidden text-ellipsis">
+          <div className="text-muted-foreground text-2xl h-8 truncate text-right">
             {firstOperand || ''} {operator || ''}
           </div>
-          <div className="text-foreground text-5xl font-bold h-14 break-all flex items-center justify-end">
+          <div className="text-foreground text-6xl font-bold h-16 break-all flex items-center justify-end">
             {displayValue}
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 grid-rows-5 gap-2">
           {calculatorButtons.map(({ label, handler, className, variant }) => (
-            <Button
-              key={label}
-              onClick={handler}
-              variant={variant}
-              className={cn('text-xl sm:text-2xl h-14 sm:h-16 rounded-lg shadow-md active:shadow-inner', className)}
-            >
+             <Button
+                key={label}
+                onClick={handler}
+                variant={variant}
+                className={cn(
+                  'text-2xl h-full aspect-square rounded-xl shadow-md active:shadow-inner',
+                  label === '0' && 'col-span-2 aspect-auto',
+                  label === '=' && 'row-span-2',
+                  className
+                )}
+                style={{ gridColumn: label === '0' ? 'span 2' : '', gridRow: label === '=' ? 'span 2' : '' }}
+              >
               {label}
             </Button>
           ))}
