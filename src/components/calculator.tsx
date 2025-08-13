@@ -3,15 +3,19 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-import { X, Divide, Plus, Minus, Percent, Delete, ChevronsRight } from 'lucide-react';
+import { X, Divide, Plus, Minus, Percent, Delete } from 'lucide-react';
 
 export function Calculator() {
   const [displayValue, setDisplayValue] = useState('0');
   const [firstOperand, setFirstOperand] = useState<string | null>(null);
   const [operator, setOperator] = useState<string | null>(null);
   const [shouldResetDisplay, setShouldResetDisplay] = useState(false);
+  const [scheduleCount, setScheduleCount] = useState('1');
+  const [utilizationRate, setUtilizationRate] = useState<number | null>(null);
   const { toast } = useToast();
 
   const inputDigit = (digit: string) => {
@@ -40,6 +44,7 @@ export function Calculator() {
     setFirstOperand(null);
     setOperator(null);
     setShouldResetDisplay(false);
+    setUtilizationRate(null);
   };
   
   const backspace = () => {
@@ -78,6 +83,12 @@ export function Calculator() {
     return term1 * term2 * 4;
   };
 
+  const calculateUtilization = (num1: number, num2: number, schedules: number): number => {
+    if (schedules <= 0) return 0;
+    const rate = (num1 * num2 * schedules) / (515 * 510);
+    return rate * 100;
+  }
+
   const handleEquals = () => {
     if (operator === null || firstOperand === null) {
       return;
@@ -85,9 +96,11 @@ export function Calculator() {
 
     const first = parseFloat(firstOperand);
     const second = parseFloat(displayValue);
+    const schedules = parseInt(scheduleCount, 10);
 
-    if (isNaN(first) || isNaN(second)) {
+    if (isNaN(first) || isNaN(second) || isNaN(schedules)) {
       setDisplayValue('Error');
+      setUtilizationRate(null);
       setShouldResetDisplay(true);
       return;
     }
@@ -95,8 +108,11 @@ export function Calculator() {
     if (operator === 'x') {
         const result = calculate(first, second);
         setDisplayValue(String(result));
+        const utilization = calculateUtilization(first, second, schedules);
+        setUtilizationRate(utilization);
     } else {
         setDisplayValue('Error');
+        setUtilizationRate(null);
     }
 
     setFirstOperand(null);
@@ -116,8 +132,22 @@ export function Calculator() {
   }
 
   return (
-    <div className="bg-background w-full h-screen flex flex-col justify-end p-4 sm:p-6 md:p-8">
+    <div className="bg-background w-full max-w-sm mx-auto h-screen flex flex-col justify-end p-4 sm:p-6 md:p-8">
       <div className="flex-1 flex flex-col justify-end items-end text-right mb-4 overflow-hidden">
+        <div className="w-full mb-4">
+          <Label htmlFor="schedule-count" className="text-muted-foreground text-sm text-left block mb-1">排版数</Label>
+          <Input 
+            id="schedule-count"
+            type="number"
+            value={scheduleCount}
+            onChange={(e) => setScheduleCount(e.target.value)}
+            className="bg-secondary border-none text-right text-lg"
+            placeholder="输入排版数"
+          />
+        </div>
+        <div className="text-muted-foreground text-2xl h-8 truncate w-full text-right">
+            {utilizationRate !== null ? `排班利用率: ${utilizationRate.toFixed(2)}%` : ''}
+        </div>
         <div className="text-muted-foreground text-4xl h-10 truncate">
           {firstOperand || ''} {operator || ''}
         </div>
