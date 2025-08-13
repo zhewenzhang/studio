@@ -14,7 +14,6 @@ export function Calculator() {
   const [firstOperand, setFirstOperand] = useState<string | null>(null);
   const [operator, setOperator] = useState<string | null>(null);
   const [shouldResetDisplay, setShouldResetDisplay] = useState(false);
-  const [scheduleCount, setScheduleCount] = useState('1');
   const [utilizationRate, setUtilizationRate] = useState<number | null>(null);
   const { toast } = useToast();
 
@@ -96,9 +95,9 @@ export function Calculator() {
 
     const first = parseFloat(firstOperand);
     const second = parseFloat(displayValue);
-    const schedules = parseInt(scheduleCount, 10);
+    const schedules = 1; // Hardcode schedule count to 1
 
-    if (isNaN(first) || isNaN(second) || isNaN(schedules)) {
+    if (isNaN(first) || isNaN(second)) {
       setDisplayValue('Error');
       setUtilizationRate(null);
       setShouldResetDisplay(true);
@@ -134,17 +133,7 @@ export function Calculator() {
   return (
     <div className="bg-background w-full max-w-sm mx-auto h-screen flex flex-col justify-end p-4 sm:p-6 md:p-8">
       <div className="flex-1 flex flex-col justify-end items-end text-right mb-4 overflow-hidden">
-        <div className="w-full mb-4">
-          <Label htmlFor="schedule-count" className="text-muted-foreground text-sm text-left block mb-1">排版数</Label>
-          <Input 
-            id="schedule-count"
-            type="number"
-            value={scheduleCount}
-            onChange={(e) => setScheduleCount(e.target.value)}
-            className="bg-secondary border-none text-right text-lg"
-            placeholder="输入排版数"
-          />
-        </div>
+        
         <div className="text-muted-foreground text-2xl h-8 truncate w-full text-right">
             {utilizationRate !== null ? `排班利用率: ${utilizationRate.toFixed(2)}%` : ''}
         </div>
