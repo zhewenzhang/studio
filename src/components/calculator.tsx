@@ -3,8 +3,6 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { X, Divide, Plus, Minus, Percent, Delete } from 'lucide-react';
@@ -131,7 +129,7 @@ export function Calculator() {
   }
 
   return (
-    <div className="bg-background w-full max-w-sm mx-auto h-screen flex flex-col justify-end p-4 sm:p-6 md:p-8">
+    <div className="bg-background w-full max-w-sm mx-auto h-full flex flex-col justify-end p-4">
       <div className="flex-1 flex flex-col justify-end items-end text-right mb-4 overflow-hidden">
         
         <div className="text-muted-foreground text-2xl h-8 truncate w-full text-right">
