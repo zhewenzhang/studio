@@ -133,7 +133,7 @@ export function Calculator() {
       <div className="flex-1 flex flex-col justify-end items-end text-right mb-4 overflow-hidden">
         
         <div className="text-muted-foreground text-2xl h-8 truncate w-full text-right">
-            {utilizationRate !== null ? `排班利用率: ${utilizationRate.toFixed(2)}%` : ''}
+            {utilizationRate !== null ? `排版利用率: ${utilizationRate.toFixed(2)}%` : ''}
         </div>
         <div className="text-muted-foreground text-4xl h-10 truncate">
           {firstOperand || ''} {operator || ''}
