@@ -145,7 +145,10 @@ export function Calculator() {
       <div className="grid grid-cols-4 grid-rows-5 gap-3">
           <Button onClick={clearAll} className={getButtonClass('accent')}>C</Button>
           <Button onClick={() => handleOperator('÷')} className={getButtonClass('accent')}><Divide size={32} /></Button>
-          <Button onClick={() => handleOperator('x')} className={getButtonClass('accent')}><X size={32} /></Button>
+          <Button onClick={() => handleOperator('x')} className={cn(getButtonClass('accent'), 'flex flex-col items-center justify-center p-2 text-2xl leading-none')}>
+            <span>x</span>
+            <span className="text-xs mt-1">排版计算</span>
+          </Button>
           <Button onClick={backspace} className={getButtonClass('accent')}><Delete size={32} /></Button>
           
           <Button onClick={() => inputDigit('7')} className={getButtonClass('secondary')}>7</Button>
@@ -161,7 +164,7 @@ export function Calculator() {
           <Button onClick={() => inputDigit('1')} className={getButtonClass('secondary')}>1</Button>
           <Button onClick={() => inputDigit('2')} className={getButtonClass('secondary')}>2</Button>
           <Button onClick={() => inputDigit('3')} className={getButtonClass('secondary')}>3</Button>
-          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2 aspect-auto')}>=</Button>
+          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2')}>=</Button>
 
           <Button onClick={() => handleOperator('%')} className={getButtonClass('secondary')}><Percent size={32} /></Button>
           <Button onClick={() => inputDigit('0')} className={getButtonClass('secondary')}>0</Button>
