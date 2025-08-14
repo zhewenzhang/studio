@@ -58,8 +58,6 @@ export function Calculator() {
 
   const handleOperator = (nextOperator: string) => {
      if (nextOperator !== 'x') {
-      // This part is now effectively disabled by the button's disabled state,
-      // but kept as a fallback.
       toast({
         variant: "destructive",
         title: "Unsupported Operation",
@@ -84,7 +82,7 @@ export function Calculator() {
   };
 
   const calculate = (bd1: number, bd2: number): number => {
-    const constantPart = 236.5; // 246.2 - 5 * 2 + 0.3
+    const constantPart = 246.2 - 5 * 2 + 0.3;
     const term1 = Math.floor(constantPart / (bd1 + 0.3));
     const term2 = Math.floor(constantPart / (bd2 + 0.3));
     return term1 * term2 * 4;
@@ -143,7 +141,7 @@ export function Calculator() {
 
   return (
     <div className="bg-background w-full max-w-sm mx-auto h-full flex flex-col justify-end p-4">
-      <div className="flex-1 flex flex-col justify-end items-end text-right mb-4 overflow-hidden">
+      <div className="flex-1 flex flex-col justify-end items-end text-right mb-4 overflow-hidden min-h-[128px]">
         
         <div className="text-muted-foreground text-2xl h-8 truncate w-full text-right">
             {utilizationRate !== null ? `排版利用率: ${utilizationRate.toFixed(2)}%` : ''}
