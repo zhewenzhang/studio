@@ -58,6 +58,8 @@ export function Calculator() {
 
   const handleOperator = (nextOperator: string) => {
      if (nextOperator !== 'x') {
+      // This part is now effectively disabled by the button's disabled state,
+      // but kept as a fallback.
       toast({
         variant: "destructive",
         title: "Unsupported Operation",
@@ -153,7 +155,7 @@ export function Calculator() {
       </div>
       <div className="grid grid-cols-4 grid-rows-5 gap-3">
           <Button onClick={clearAll} className={getButtonClass('accent')}>C</Button>
-          <Button onClick={() => handleOperator('÷')} className={getButtonClass('accent')}><Divide size={32} /></Button>
+          <Button onClick={() => handleOperator('÷')} className={getButtonClass('accent')} disabled><Divide size={32} /></Button>
           <Button onClick={() => handleOperator('x')} className={cn(getButtonClass('accent'), 'flex flex-col items-center justify-center p-2 text-xl leading-none')}>
             <span className="text-2xl">x</span>
             <span className="text-xs mt-1 font-sans">排版计算</span>
@@ -163,19 +165,19 @@ export function Calculator() {
           <Button onClick={() => inputDigit('7')} className={getButtonClass('secondary')}>7</Button>
           <Button onClick={() => inputDigit('8')} className={getButtonClass('secondary')}>8</Button>
           <Button onClick={() => inputDigit('9')} className={getButtonClass('secondary')}>9</Button>
-          <Button onClick={() => handleOperator('-')} className={getButtonClass('accent')}><Minus size={32}/></Button>
+          <Button onClick={() => handleOperator('-')} className={getButtonClass('accent')} disabled><Minus size={32}/></Button>
           
           <Button onClick={() => inputDigit('4')} className={getButtonClass('secondary')}>4</Button>
           <Button onClick={() => inputDigit('5')} className={getButtonClass('secondary')}>5</Button>
           <Button onClick={() => inputDigit('6')} className={getButtonClass('secondary')}>6</Button>
-          <Button onClick={() => handleOperator('+')} className={getButtonClass('accent')}><Plus size={32} /></Button>
+          <Button onClick={() => handleOperator('+')} className={getButtonClass('accent')} disabled><Plus size={32} /></Button>
           
           <Button onClick={() => inputDigit('1')} className={getButtonClass('secondary')}>1</Button>
           <Button onClick={() => inputDigit('2')} className={getButtonClass('secondary')}>2</Button>
           <Button onClick={() => inputDigit('3')} className={getButtonClass('secondary')}>3</Button>
           <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2 aspect-auto')}>=</Button>
 
-          <Button onClick={() => handleOperator('%')} className={getButtonClass('secondary')}><Percent size={32} /></Button>
+          <Button onClick={() => handleOperator('%')} className={getButtonClass('secondary')} disabled><Percent size={32} /></Button>
           <Button onClick={() => inputDigit('0')} className={getButtonClass('secondary')}>0</Button>
           <Button onClick={inputDecimal} className={getButtonClass('secondary')}>.</Button>
       </div>
