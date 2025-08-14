@@ -13,6 +13,7 @@ export function Calculator() {
   const [operator, setOperator] = useState<string | null>(null);
   const [shouldResetDisplay, setShouldResetDisplay] = useState(false);
   const [utilizationRate, setUtilizationRate] = useState<number | null>(null);
+  const [showUppLabel, setShowUppLabel] = useState(false);
   const { toast } = useToast();
 
   const inputDigit = (digit: string) => {
@@ -20,6 +21,7 @@ export function Calculator() {
     if (shouldResetDisplay) {
       setDisplayValue(digit);
       setShouldResetDisplay(false);
+      setShowUppLabel(false);
     } else {
       setDisplayValue(displayValue === '0' ? digit : displayValue + digit);
     }
@@ -29,6 +31,7 @@ export function Calculator() {
     if (shouldResetDisplay) {
       setDisplayValue('0.');
       setShouldResetDisplay(false);
+      setShowUppLabel(false);
       return;
     }
     if (!displayValue.includes('.')) {
@@ -42,6 +45,7 @@ export function Calculator() {
     setOperator(null);
     setShouldResetDisplay(false);
     setUtilizationRate(null);
+    setShowUppLabel(false);
   };
   
   const backspace = () => {
@@ -68,6 +72,7 @@ export function Calculator() {
       const result = calculate(first, currentValue);
       setFirstOperand(String(result));
       setDisplayValue(String(result));
+      setShowUppLabel(true);
     } else {
         setFirstOperand(displayValue);
     }
@@ -102,6 +107,7 @@ export function Calculator() {
       setDisplayValue('Error');
       setUtilizationRate(null);
       setShouldResetDisplay(true);
+      setShowUppLabel(false);
       return;
     }
     
@@ -110,9 +116,11 @@ export function Calculator() {
         setDisplayValue(String(result));
         const utilization = calculateUtilization(first, second, result);
         setUtilizationRate(utilization);
+        setShowUppLabel(true);
     } else {
         setDisplayValue('Error');
         setUtilizationRate(null);
+        setShowUppLabel(false);
     }
 
     setFirstOperand(null);
@@ -138,15 +146,16 @@ export function Calculator() {
         <div className="text-muted-foreground text-2xl h-8 truncate w-full text-right">
             {utilizationRate !== null ? `排版利用率: ${utilizationRate.toFixed(2)}%` : ''}
         </div>
-        <div className="text-foreground text-7xl sm:text-8xl font-medium break-all flex items-center justify-end min-h-[96px]">
-          {displayValue}
+        <div className="text-foreground text-7xl sm:text-8xl font-medium break-all flex items-end justify-end min-h-[96px] w-full">
+            {showUppLabel && <span className="text-2xl mr-2 text-muted-foreground mb-2">UPP</span>}
+            <span className="truncate">{displayValue}</span>
         </div>
       </div>
       <div className="grid grid-cols-4 grid-rows-5 gap-3">
           <Button onClick={clearAll} className={getButtonClass('accent')}>C</Button>
           <Button onClick={() => handleOperator('÷')} className={getButtonClass('accent')}><Divide size={32} /></Button>
           <Button onClick={() => handleOperator('x')} className={cn(getButtonClass('accent'), 'flex flex-col items-center justify-center p-2 text-xl leading-none')}>
-            <span>x</span>
+            <span className="text-2xl">x</span>
             <span className="text-xs mt-1 font-sans">排版计算</span>
           </Button>
           <Button onClick={backspace} className={getButtonClass('accent')}><Delete size={32} /></Button>
