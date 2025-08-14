@@ -145,9 +145,9 @@ export function Calculator() {
       <div className="grid grid-cols-4 grid-rows-5 gap-3">
           <Button onClick={clearAll} className={getButtonClass('accent')}>C</Button>
           <Button onClick={() => handleOperator('÷')} className={getButtonClass('accent')}><Divide size={32} /></Button>
-          <Button onClick={() => handleOperator('x')} className={cn(getButtonClass('accent'), 'flex flex-col items-center justify-center p-2 text-2xl leading-none')}>
+          <Button onClick={() => handleOperator('x')} className={cn(getButtonClass('accent'), 'flex flex-col items-center justify-center p-2 text-xl leading-none')}>
             <span>x</span>
-            <span className="text-xs mt-1">排版计算</span>
+            <span className="text-xs mt-1 font-sans">排版计算</span>
           </Button>
           <Button onClick={backspace} className={getButtonClass('accent')}><Delete size={32} /></Button>
           
