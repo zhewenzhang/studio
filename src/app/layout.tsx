@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'ScheduleCrunch',
+  title: 'UPPCalculate',
   description: 'A special calculator for schedule utilization.',
 };
 
