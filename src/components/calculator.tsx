@@ -13,6 +13,7 @@ export function Calculator() {
   const [operator, setOperator] = useState<string | null>(null);
   const [shouldResetDisplay, setShouldResetDisplay] = useState(false);
   const [utilizationRate, setUtilizationRate] = useState<number | null>(null);
+  const [productionWeeks, setProductionWeeks] = useState<number | null>(null);
   const [showUppLabel, setShowUppLabel] = useState(false);
   const { toast } = useToast();
 
@@ -22,6 +23,8 @@ export function Calculator() {
       setDisplayValue(digit);
       setShouldResetDisplay(false);
       setShowUppLabel(false);
+      setUtilizationRate(null);
+      setProductionWeeks(null);
     } else {
       setDisplayValue(displayValue === '0' ? digit : displayValue + digit);
     }
@@ -32,6 +35,8 @@ export function Calculator() {
       setDisplayValue('0.');
       setShouldResetDisplay(false);
       setShowUppLabel(false);
+      setUtilizationRate(null);
+      setProductionWeeks(null);
       return;
     }
     if (!displayValue.includes('.')) {
@@ -45,6 +50,7 @@ export function Calculator() {
     setOperator(null);
     setShouldResetDisplay(false);
     setUtilizationRate(null);
+    setProductionWeeks(null);
     setShowUppLabel(false);
   };
   
@@ -57,6 +63,8 @@ export function Calculator() {
   }
 
   const handleOperator = (nextOperator: string) => {
+    setUtilizationRate(null);
+    setProductionWeeks(null);
     const currentValue = parseFloat(displayValue);
 
     if (nextOperator === '+') {
@@ -69,10 +77,11 @@ export function Calculator() {
         return;
       }
       const productionTime = (currentValue - 2) / 2 * 7 + 7 + 5;
+      const weeks = productionTime / 7;
+      setProductionWeeks(weeks);
       setDisplayValue(`${productionTime}天`);
       setShouldResetDisplay(true);
       setShowUppLabel(false);
-      setUtilizationRate(null);
       setFirstOperand(null);
       setOperator(null);
       return;
@@ -126,6 +135,7 @@ export function Calculator() {
     if (isNaN(first) || isNaN(second)) {
       setDisplayValue('Error');
       setUtilizationRate(null);
+      setProductionWeeks(null);
       setShouldResetDisplay(true);
       setShowUppLabel(false);
       return;
@@ -142,7 +152,7 @@ export function Calculator() {
         setUtilizationRate(null);
         setShowUppLabel(false);
     }
-
+    setProductionWeeks(null);
     setFirstOperand(null);
     setOperator(null);
     setShouldResetDisplay(true);
@@ -153,7 +163,7 @@ export function Calculator() {
         'text-3xl sm:text-4xl h-full aspect-square rounded-xl shadow-md active:shadow-inner font-light',
         {
           'bg-secondary hover:bg-muted text-secondary-foreground': variant === 'secondary',
-          'bg-accent hover:bg-accent/90 text-blue-400': variant === 'accent',
+          'bg-accent hover:bg-accent/90 text-accent-foreground': variant === 'accent',
           'bg-primary hover:bg-primary/90 text-primary-foreground': variant === 'primary'
         }
       );
@@ -165,6 +175,7 @@ export function Calculator() {
         
         <div className="text-muted-foreground text-2xl h-8 truncate w-full text-right">
             {utilizationRate !== null ? `排版利用率: ${utilizationRate.toFixed(2)}%` : ''}
+            {productionWeeks !== null ? `生产周数: ${productionWeeks.toFixed(1)}周` : ''}
         </div>
         <div className="text-foreground text-7xl sm:text-8xl font-medium break-all flex items-end justify-end min-h-[96px] w-full">
             {showUppLabel && <span className="text-2xl mr-2 text-muted-foreground mb-2">UPP</span>}
@@ -196,7 +207,7 @@ export function Calculator() {
           <Button onClick={() => inputDigit('1')} className={getButtonClass('secondary')}>1</Button>
           <Button onClick={() => inputDigit('2')} className={getButtonClass('secondary')}>2</Button>
           <Button onClick={() => inputDigit('3')} className={getButtonClass('secondary')}>3</Button>
-          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2', 'aspect-auto')}>=</Button>
+          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2 aspect-auto')}>=</Button>
 
           <Button onClick={() => handleOperator('%')} className={getButtonClass('secondary')} disabled><Percent size={32} /></Button>
           <Button onClick={() => inputDigit('0')} className={getButtonClass('secondary')}>0</Button>
