@@ -57,6 +57,27 @@ export function Calculator() {
   }
 
   const handleOperator = (nextOperator: string) => {
+    const currentValue = parseFloat(displayValue);
+
+    if (nextOperator === '+') {
+      if (currentValue % 2 !== 0) {
+        toast({
+          variant: "destructive",
+          title: "无效输入",
+          description: "生产时间计算仅支持偶数。",
+        });
+        return;
+      }
+      const productionTime = (currentValue - 2) / 2 * 7 + 7 + 5;
+      setDisplayValue(`${productionTime}天`);
+      setShouldResetDisplay(true);
+      setShowUppLabel(false);
+      setUtilizationRate(null);
+      setFirstOperand(null);
+      setOperator(null);
+      return;
+    }
+
      if (nextOperator !== 'x') {
       toast({
         variant: "destructive",
@@ -66,7 +87,6 @@ export function Calculator() {
       return;
     }
     
-    const currentValue = parseFloat(displayValue);
     if (operator && !shouldResetDisplay && firstOperand !== null) {
       const first = parseFloat(firstOperand);
       const result = calculate(first, currentValue);
@@ -168,12 +188,15 @@ export function Calculator() {
           <Button onClick={() => inputDigit('4')} className={getButtonClass('secondary')}>4</Button>
           <Button onClick={() => inputDigit('5')} className={getButtonClass('secondary')}>5</Button>
           <Button onClick={() => inputDigit('6')} className={getButtonClass('secondary')}>6</Button>
-          <Button onClick={() => handleOperator('+')} className={getButtonClass('accent')} disabled><Plus size={32} /></Button>
+          <Button onClick={() => handleOperator('+')} className={cn(getButtonClass('accent'), 'flex flex-col items-center justify-center p-2 text-xl leading-none')}>
+            <Plus size={24} />
+            <span className="text-xs mt-1 font-sans">生产时间</span>
+          </Button>
           
           <Button onClick={() => inputDigit('1')} className={getButtonClass('secondary')}>1</Button>
           <Button onClick={() => inputDigit('2')} className={getButtonClass('secondary')}>2</Button>
           <Button onClick={() => inputDigit('3')} className={getButtonClass('secondary')}>3</Button>
-          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2 aspect-auto')}>=</Button>
+          <Button onClick={handleEquals} className={cn(getButtonClass('primary'), 'row-span-2', 'aspect-auto')}>=</Button>
 
           <Button onClick={() => handleOperator('%')} className={getButtonClass('secondary')} disabled><Percent size={32} /></Button>
           <Button onClick={() => inputDigit('0')} className={getButtonClass('secondary')}>0</Button>
